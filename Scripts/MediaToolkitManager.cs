@@ -21,6 +21,7 @@ namespace PeskyBox.MediaToolkitManager
         
         // CAMERA MANAGER
         #region CameraStuff
+        
         public Toggle[] ActivateCameraToggles;
         public GameObject Cameras;
         public bool cameraActiveByDefault = false;
@@ -34,10 +35,12 @@ namespace PeskyBox.MediaToolkitManager
         {
             Cameras.SetActive(ActivateCameraToggles[0].isOn);
         }
+        
         #endregion
         
         // MICROPHONE MANAGER
         #region MicrophoneStuff
+        
         public Toggle[] ActivateMicrophoneToggles;
         public GameObject Microphone;
         public bool microphoneActiveByDefault = false;
@@ -51,6 +54,7 @@ namespace PeskyBox.MediaToolkitManager
         {
             Microphone.SetActive(ActivateMicrophoneToggles[0].isOn);
         }
+        
         #endregion
         
         // LIGHTS MANAGER
@@ -98,21 +102,49 @@ namespace PeskyBox.MediaToolkitManager
         // Hell of functions to call from toggles
         public void toggleLightOne()
         {
+            // Warn if light is null
+            if (LightObjects[0] == null)
+            {
+                Debug.LogError("Light 1 is null, either assign a light or remove the toggle");
+                return;
+            }
+            
             toggleLights(0, ActivateLightOneToggles[0].isOn);
         }
         
         public void toggleLightTwo()
         {
+            // Warn if light is null
+            if (LightObjects[1] == null)
+            {
+                Debug.LogError("Light 2 is null, either assign a light or remove the toggle");
+                return;
+            }
+            
             toggleLights(1, ActivateLightTwoToggles[0].isOn);
         }
         
         public void toggleLightThree()
         {
+            // Warn if light is null
+            if (LightObjects[2] == null)
+            {
+                Debug.LogError("Light 3 is null, either assign a light or remove the toggle");
+                return;
+            }
+            
             toggleLights(2, ActivateLightThreeToggles[0].isOn);
         }
         
         public void toggleLightFour()
         {
+            // Warn if light is null
+            if (LightObjects[3] == null)
+            {
+                Debug.LogError("Light 4 is null, either assign a light or remove the toggle");
+                return;
+            }
+            
             toggleLights(3, ActivateLightFourToggles[0].isOn);
         }
 

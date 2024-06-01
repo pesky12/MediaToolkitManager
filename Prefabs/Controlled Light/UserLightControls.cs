@@ -1,10 +1,7 @@
-﻿
-using UdonSharp;
-using Unity.Mathematics;
-using UnityEditor;
+﻿using UdonSharp;
 using UnityEngine;
+using UnityEngine.UI;
 using VRC.SDKBase;
-using VRC.Udon;
 
 namespace PJKT
 {
@@ -18,25 +15,26 @@ namespace PJKT
         [SerializeField] public MeshRenderer SpotMesh;
         [SerializeField] public MeshRenderer MenuHandle;
         [Space]
-        [SerializeField] public UnityEngine.UI.Toggle LightToggle;
-        [SerializeField] public UnityEngine.UI.Toggle PointToggle;
-        [SerializeField] public UnityEngine.UI.Toggle SpotToggle;
-        [SerializeField] public UnityEngine.UI.Toggle DirectionalToggle;
-        [SerializeField] public UnityEngine.UI.Slider RangeSlider;
-        [SerializeField] public UnityEngine.UI.Slider SpotAngleSlider;
-        [SerializeField] public UnityEngine.UI.Slider SaturationSlider;
-        [SerializeField] public UnityEngine.UI.Slider HueSlider;
-        [SerializeField] public UnityEngine.UI.Slider IntensitySlider;
-        [SerializeField] public UnityEngine.UI.Toggle ShadowOffToggle;
-        [SerializeField] public UnityEngine.UI.Toggle ShadowHardToggle;
-        [SerializeField] public UnityEngine.UI.Toggle ShadowSoftToggle;
-        [SerializeField] public UnityEngine.UI.Toggle RenderModeAutoToggle;
-        [SerializeField] public UnityEngine.UI.Toggle RenderModeImportantToggle;
-        [SerializeField] public UnityEngine.UI.Toggle RenderModeNotImportantToggle;
-        [SerializeField] public UnityEngine.UI.Toggle CullingMaskPlayersToggle;
-        [SerializeField] public UnityEngine.UI.Toggle CullingMaskWorldToggle;
-        [SerializeField] public UnityEngine.UI.Toggle ShowInCameraToggle;
-        [SerializeField] public UnityEngine.UI.Toggle WorldLockToggle;
+        [SerializeField] public Toggle LightToggle;
+        [SerializeField] public Toggle lightToggleGlobal;
+        [SerializeField] public Toggle PointToggle;
+        [SerializeField] public Toggle SpotToggle;
+        [SerializeField] public Toggle DirectionalToggle;
+        [SerializeField] public Slider RangeSlider;
+        [SerializeField] public Slider SpotAngleSlider;
+        [SerializeField] public Slider SaturationSlider;
+        [SerializeField] public Slider HueSlider;
+        [SerializeField] public Slider IntensitySlider;
+        [SerializeField] public Toggle ShadowOffToggle;
+        [SerializeField] public Toggle ShadowHardToggle;
+        [SerializeField] public Toggle ShadowSoftToggle;
+        [SerializeField] public Toggle RenderModeAutoToggle;
+        [SerializeField] public Toggle RenderModeImportantToggle;
+        [SerializeField] public Toggle RenderModeNotImportantToggle;
+        [SerializeField] public Toggle CullingMaskPlayersToggle;
+        [SerializeField] public Toggle CullingMaskWorldToggle;
+        [SerializeField] public Toggle ShowInCameraToggle;
+        [SerializeField] public Toggle WorldLockToggle;
         [Space]
         
 
@@ -48,23 +46,23 @@ namespace PJKT
 
 
         //----------Networked variables----------//
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public bool lightEnabled;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public byte lightMode;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public float lightRange;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public float lightSpotAngle;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public Color lightColor;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public float lightIntensity;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public int lightShadowType;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public int lightRenderMode;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public int lightCullingMask;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public bool showInCamera;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public bool lightRigLockedInWorld;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public Vector3 worldLockedPos;
-        [UdonSynced(UdonSyncMode.None), HideInInspector] public Quaternion worldLockedRot;
+        [UdonSynced, HideInInspector] public bool lightEnabled;
+        [UdonSynced, HideInInspector] public byte lightMode;
+        [UdonSynced, HideInInspector] public float lightRange;
+        [UdonSynced, HideInInspector] public float lightSpotAngle;
+        [UdonSynced, HideInInspector] public Color lightColor;
+        [UdonSynced, HideInInspector] public float lightIntensity;
+        [UdonSynced, HideInInspector] public int lightShadowType;
+        [UdonSynced, HideInInspector] public int lightRenderMode;
+        [UdonSynced, HideInInspector] public int lightCullingMask;
+        [UdonSynced, HideInInspector] public bool showInCamera;
+        [UdonSynced, HideInInspector] public bool lightRigLockedInWorld;
+        [UdonSynced, HideInInspector] public Vector3 worldLockedPos;
+        [UdonSynced(), HideInInspector] public Quaternion worldLockedRot;
 
 
         //----------Runtime variables----------//
-        private bool dirty = false;
+        private bool dirty;
         private int worldCullingMask;
         private int playerCullingMask;
 
