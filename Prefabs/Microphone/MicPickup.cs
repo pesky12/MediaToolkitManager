@@ -1,59 +1,79 @@
 ﻿
+using System;
 using UdonSharp;
 using UnityEngine;
 using VRC.SDKBase;
 using VRC.Udon;
 
-[UdonBehaviourSyncMode(BehaviourSyncMode.Continuous)]
-public class MicPickup : UdonSharpBehaviour
+namespace PeskyBox.MediaToolkitManager
 {
-    public MicScript micScript;
+    
+        [UdonBehaviourSyncMode(BehaviourSyncMode.Continuous)]
 
-    //--------------------THIS CODE IS A PUBLIC VARABLE, AS SUCH THIS SETTING CAN DIFFER DEPENDING ON THE SETTINGS IN THE SCENE FILE--------------------
-    [Tooltip("List of people who are allowed to fire the gun")]
-    private string[] allowedPlayers = {
-        "Splitco",
-        "Pesky12",
-        "SHERR01",
-        "Chanoler",
-        "PulpFreeFiction",
-        "DTJester"
-    };
-    //--------------------THIS CODE IS A PUBLIC VARABLE, AS SUCH THIS SETTING CAN DIFFER DEPENDING ON THE SETTINGS IN THE SCENE FILE--------------------
-
-    private void Start() {
-        Debug.Assert(micScript != null, "You forgot to set the mic script on the pickup");
-    }
-
-    public override void OnPickup()
+    public class MicPickup : UdonSharpBehaviour
     {
-        Networking.SetOwner(Networking.LocalPlayer, gameObject);
-        micScript.OnPickupExternal();
-    }
+        public MicScript micScript;
+        
+        private bool resetByDistance = false;
+        public float resetDistance = 8f;
+        public Vector3 resetPosition = new Vector3(0, 0, 0);
 
-    public override void OnPickupUseDown()
-    {
-        if (validatePlayer()) micScript.OnPickupUseDownExternal();
-    }
-    public override void OnPickupUseUp()
-    {
-        if (validatePlayer()) micScript.OnPickupUseUpExternal();
-    }
-    public override void OnDrop()
-    {
-        if (validatePlayer()) micScript.OnDropExternal();
-    }
+        private VRC_Pickup thisPickup;
 
-    private bool validatePlayer()
-    {
-        string localPlayerName = Networking.LocalPlayer.displayName;
+        //--------------------THIS CODE IS A PUBLIC VARABLE, AS SUCH THIS SETTING CAN DIFFER DEPENDING ON THE SETTINGS IN THE SCENE FILE--------------------
 
-        foreach (string allowedplayer in allowedPlayers)
+        //--------------------THIS CODE IS A PUBLIC VARABLE, AS SUCH THIS SETTING CAN DIFFER DEPENDING ON THE SETTINGS IN THE SCENE FILE--------------------
+
+        private void Start()
         {
-            if (localPlayerName.Equals(allowedplayer))
-                return true;
+            Debug.Assert(micScript != null, "You forgot to set the mic script on the pickup");
+            thisPickup = (VRC_Pickup)GetComponent(typeof(VRC_Pickup));
         }
 
-        return false;
+        public override void OnPickup()
+        {
+            Networking.SetOwner(Networking.LocalPlayer, gameObject);
+            micScript.OnPickupExternal();
+        }
+
+        public override void OnPickupUseDown()
+        {
+            if (validatePlayer()) micScript.OnPickupUseDownExternal();
+        }
+
+        public override void OnPickupUseUp()
+        {
+            if (validatePlayer()) micScript.OnPickupUseUpExternal();
+        }
+
+        public override void OnDrop()
+        {
+            if (validatePlayer()) micScript.OnDropExternal();
+        }
+
+        private void Update()
+        {
+            if (resetByDistance)
+            {
+                if (Vector3.Distance(Networking.LocalPlayer.GetPosition(), resetPosition) > resetDistance)
+                {
+                    thisPickup.Drop();
+                    thisPickup.transform.position = resetPosition;
+                }
+            }
+        }
+        
+        public void SetResetByDistance(bool b)
+        {
+            resetByDistance = b;
+        }
+
+        private bool validatePlayer()
+        {
+            // string localPlayerName = Networking.LocalPlayer.displayName;
+
+            return true;
+        }
     }
+
 }
